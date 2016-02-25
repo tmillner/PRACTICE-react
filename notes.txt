@@ -1,0 +1,36 @@
+用webpack的话，一般就会输出一个单独的bundled文件叫做 index.js，
+输入文件是main.js
+
+loaders就是一个能够处理文件的功能。babel也是一个loader
+
+要用webpack的话一般要下载webpack－devserver， 该配置文件也用devServer的一项。
+
+当你看到一个包涵开头和尾头的正斜杠，这就是regexp
+http://www.w3schools.com/jsref/jsref_obj_regexp.asp
+
+如果出现react错误叫： Refusing to install react as a dependency of itself，这意味着应该强逼安装，不然的话也会出现其他失败倒入该文件的错误
+ERROR in ./main.js
+Module not found: Error: Cannot resolve module 'react' in /Users/macbookpro/Projects/react_practice
+
+JSX 是一个类似于HTML语言，React的components经常使用的. 实际上，jsx是方便编写HTML的javascript，
+REACT 本身会理解JSX能把他transpile成对应的react语法
+
+在新的JS里（es6）如果导入一个模块，因为实际上是个Class，所以会出现大写字母开头
+例如 import React from 'react';
+不知道这是不是个人的习惯
+
+在JS里如果不需要使用一个模块导出的东西（class），你并不要用module.export （如export default App)
+如果该文件本身进行某些操作，光import就足够起作用
+
+默认情况下，当一个React应用程序编译以后，一个节会有如下面的data－reactid属性
+<button data-reactid=".1">
+
+在使用属性时，不要用名为“value”的属性， value 本身是一个原本 HTML属性
+
+Mixin, 允许新的类或成分遗传其他功能。比如
+Mixin1Functionality －》 Label
+Mixin1Functionality －》 Button
+Mixin1Functionality －》 P
+
+在字符串前面添加一个＋号，这会创造一个Number类
+ex val={+this.state.green}
