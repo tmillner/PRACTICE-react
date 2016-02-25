@@ -6,79 +6,48 @@ class App extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			'green' : 0,
-			'lifespan' : 0
+			'input' : '/* Edit me */',
+			'output' : '',
+			'error' : ''
 		};
 		this.update = this.update.bind(this);
 	};
 
-	update(e){
-		this.setState({
-			'green' : ReactDOM.findDOMNode(this.refs.green.refs.inp).value,
-			'lifespan' : ReactDOM.findDOMNode(this.refs.lifespan.refs.inp).value,
-		});
+	update(e) {
+		let code = e.target.value;
+		try {
+			this.setState({
+				/* pass in options as second arg to babel-core */
+				'output' : babel.transform(code, {
+					stage : 0,
+					loose : 'all'
+				}).code,
+				'error' : ''
+			});
+		} catch(e) {
+			this.setState({'error': e.message});
+		}
 	};
 
 	render() {
 		return (
 			<div>
-				 <NumInput ref="green"
-		          min={0}
-		          max={255}
-		          step={0.01}
-		          val={+this.state.green}
-		          type="number"
-		          label="Red"
-		          update={this.update} />
-		          <br />
-		          <NumInput ref="lifespan"
-		          min={0}
-		          max={50}
-		          val={+this.state.lifespan}
-		          label="Lifespan in the 1300s"
-		          update={this.update} />
-			</div>	
-		);
-	};
-};
+				<header>{this.state.error}</header>
+				{/* The benefit of giving the div a class is to 
+				 juxtapose the children using display : flex
 
-class NumInput extends React.Component {
-	render() {
-		let label = this.props.label !== '' ? 
-		<label>{this.props.label} - {this.props.val}</label> : 
-		'';
-		return (
-			<div>
-				<input ref='inp' 
-				min={this.props.min}
-				max={this.props.max}
-				step={this.props.step}
-				defaultValue={this.props.val}
-				type={this.props.type}
-				onChange={this.props.update} />
-				{label}
+				 NOTE: Comments in rendered components need to be interpolated}
+				*/}
+				<div className="container">
+					<textarea 
+						defaultValue={this.state.input}
+						onChange={this.update}>
+					</textarea>
+					<pre>{this.state.output}</pre>
+				</div>
 			</div>
 		);
-	}
+	};
 };
 
-NumInput.propTypes = {
-	min: React.PropTypes.number,
-	max: React.PropTypes.number,
-	step: React.PropTypes.number,
-	val: React.PropTypes.number,
-	label: React.PropTypes.string,
-	update: React.PropTypes.func.isRequired,
-	type: React.PropTypes.oneOf(['number', 'range'])
-};
-
-NumInput.defaultProps = {
-	min: 0,
-	max: 0,
-	step: 1,
-	val: 0,
-	label: '',
-	type: 'range'
-};
-
-ReactDOM.render(<App />, document.getElementById('theApp'));
+ReactDOM.render(<App />, document.getElementById('App'));

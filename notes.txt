@@ -34,3 +34,16 @@ Mixin1Functionality －》 P
 
 在字符串前面添加一个＋号，这会创造一个Number类
 ex val={+this.state.green}
+
+如果要用浏览器运行react，还是要在《Head》导入相应的React包
+如： 
+<script src="https://fb.me/react-0.14.7.js"></script>
+<script src="https://fb.me/react-dom-0.14.7.js"></script>
+
+调试react的时候，很有帮助的插件就是Chrome react插件。可以浏览React虚拟结构
+
+babel-cli 可以帮你把原来的react或es6一次又一次转吗 如
+babel --preset react input_file1.js -o dist/file1.js --watch
+
+js中处理路径的时候，一般要使用__dirname 如
+"attr" : __dirname + "/following_path"
