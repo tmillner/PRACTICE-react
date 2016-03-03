@@ -47,3 +47,54 @@ babel --preset react input_file1.js -o dist/file1.js --watch
 
 js中处理路径的时候，一般要使用__dirname 如
 "attr" : __dirname + "/following_path"
+
+
+reactify 模块是用来把 JSX 转化成 JS
+
+Views == React Components
+Controller-View == 跟 React Component (包涵子Component)
+
+－－－－－－－－－－－－－－－测试－－－－－－－－－－－－－－－－
+要测试react的HTML（view）结果，最好能使用 ’react－addons－test－utils‘
+该模块提供一个shallow renderer（表示DOM）功能。如：
+import ReactTestUtils from 'react-addons-test-utils';
+
+const renderer = ReactTestUtils.createRenderer();
+renderer.render(<SomeComponent aProp={10} />);
+const actual = render.getRenderOutput().type;
+// 上面的getRenderOutput() 只是输出一个对象
+// 可以参考任何函数或值, 如
+// render.getRenderOutput().props.className.includes('fb');
+// ** includes 是 es2015扩充了string的一个函数
+expect(actual).ToEqual('a'); 
+// NOT STRING, a is the node
+
+
+测试的时候尽量要把方便性质的函数，输出到个别方便（utilities）文件
+在某种程度上可以使得两个部分更加decoupled， 也能更方便测试个别函数
+
+用expect跟react一起来测试并不方便。因为expect本身的Error diff 不支持
+React的JSX比较。Error diff的表现就是一大堆对象。 所以要使用的更好必须
+使用expect－jsx 然后扩充expect expect。extends（expectJSX） 
+这样才表现更漂亮的Error diff
+
+可以用 nested describe 块， 减少重复代码。nested 块里写一下tests
+利用的共同功能如
+describe('The Like button') {
+	describe('should alternate class states'){
+		let classOn = (isOn) => {
+			const renderer = TestUtils.createRenderer();
+			renderer.render(<LikeButton active={isOn} />);
+			return renderer.getRenderOutput().props
+				.className.includes('Like--active');
+		};
+
+		it('should not show when off'){
+			expect(classOn(false)).toBe(false);
+		};
+
+		it('should show when on'){
+			expect(classOn(true)).toBe(true);
+		};
+	};
+};
